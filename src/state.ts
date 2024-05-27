@@ -1,6 +1,6 @@
 import { User } from "./types";
 import { atom } from "jotai";
-import { lazyAtom } from "./lazyAtom";
+import { lazyAtom } from "./lib/lazyAtom";
 
 // const usersStateInner = atomWithLazy<User[] | Promise<User[]>>(fetchUsers);
 
@@ -25,6 +25,8 @@ import { lazyAtom } from "./lazyAtom";
 // );
 
 export const usersState = lazyAtom(fetchUsers);
+export const anotherState = lazyAtom(fetchUsers);
+export const aThirdState = lazyAtom(fetchUsers);
 
 export const firstNameSelector = atom(async (get) => {
   const users = await get(usersState);

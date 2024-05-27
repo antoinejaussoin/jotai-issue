@@ -1,9 +1,11 @@
 import "./App.css";
 import { useState } from "react";
 import Editor from "./Editor";
+import { usePreload } from "./lib/usePreload";
 
 function App() {
   const [visible, setVisible] = useState(false);
+  usePreload();
 
   return (
     <>
