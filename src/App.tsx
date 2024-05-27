@@ -1,10 +1,14 @@
 import "./App.css";
 import { useState } from "react";
 import Editor from "./Editor";
-import { usePreload } from "./lib/usePreload";
+import { preload } from "./lib/usePreload";
+import { aThirdState, anotherState, usersState } from "./state";
+
+const usePreload = preload(usersState, anotherState, aThirdState);
 
 function App() {
   const [visible, setVisible] = useState(false);
+  // usePreload(usersState, anotherState, aThirdState);
   usePreload();
 
   return (
