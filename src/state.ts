@@ -1,4 +1,4 @@
-import { atomWithLazy } from "jotai/utils";
+import { atomWithLazy, RESET } from "jotai/utils";
 import { User } from "./types";
 import { SetStateAction, atom } from "jotai";
 
@@ -9,7 +9,11 @@ export const usersState = atom(
     const users = await get(usersStateInner);
     return users;
   },
-  async (get, set, newValue: SetStateAction<User[]>) => {
+  async (get, set, newValue: SetStateAction<User[]> | typeof RESET) => {
+    if (newValue === RESET) {
+      set(usersStateInner, fetchUsers);
+      return;
+    }
     if (newValue instanceof Function) {
       const prev = await get(usersStateInner);
       const computed = newValue(prev);
@@ -28,15 +32,16 @@ export const firstNameSelector = atom(async (get) => {
 let CACHE: User[] | null = null;
 
 async function fetchUsers(): Promise<User[]> {
-  if (!CACHE) {
-    console.log("Fetching users");
-    const response = await fetch("https://jsonplaceholder.typicode.com/users");
-    const users = await response.json();
-    CACHE = users;
-    return users;
-  }
   return new Promise((resolve) => {
-    setTimeout(() => {
+    console.log("Fetching users");
+    setTimeout(async () => {
+      if (!CACHE) {
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/users"
+        );
+        const users = await response.json();
+        CACHE = users;
+      }
       resolve(CACHE as User[]);
     }, 2000);
   });

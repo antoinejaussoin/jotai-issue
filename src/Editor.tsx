@@ -4,9 +4,11 @@ import "./App.css";
 import { useAtomValue } from "jotai";
 import { usersState } from "./state";
 import { UserDisplay } from "./UserDisplay";
+import { useResetAtom } from "jotai/utils";
 
 function Editor() {
   const users = useAtomValue(usersState);
+  const reset = useResetAtom(usersState);
 
   return (
     <>
@@ -15,6 +17,7 @@ function Editor() {
         <img src={viteLogo} className="App-logo" alt="logo" />
 
         <ul>
+          <button onClick={reset}>Reload all</button>
           <UserDisplay user={users[0]} />
           {/* {users.map((user) => (
             
