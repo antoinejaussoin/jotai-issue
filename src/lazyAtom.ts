@@ -8,7 +8,7 @@ export function lazyAtom<T>(init: () => Promise<T>) {
       const users = await get(initAtom);
       return users;
     },
-    async (get, set, newValue: SetStateAction<T> | typeof RESET) => {
+    async (get, set, newValue: AsyncSetAction<T> | typeof RESET) => {
       if (newValue === RESET) {
         set(initAtom, init);
         return;
@@ -24,3 +24,9 @@ export function lazyAtom<T>(init: () => Promise<T>) {
   );
   return baseAtom;
 }
+
+type AsyncSetAction<T> =
+  | T
+  | Promise<T>
+  | SetStateAction<T>
+  | ((prev: T) => Promise<T>);

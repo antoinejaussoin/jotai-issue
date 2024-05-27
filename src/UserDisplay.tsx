@@ -1,7 +1,9 @@
 import { useAtomValue } from "jotai";
 import { User } from "./types";
 import { firstNameSelector } from "./state";
-import { usePersistUsers } from "./useUsers";
+// import { usePersistUsers } from "./useUsers";
+import { Suspense } from "react";
+import { UpdateButton } from "./UpdateButton";
 
 type UserDisplayProps = {
   user: User;
@@ -10,7 +12,7 @@ type UserDisplayProps = {
 export function UserDisplay({ user }: UserDisplayProps) {
   // const setName = useSetAtom(usersState);
   const firstName = useAtomValue(firstNameSelector);
-  const updateUser = usePersistUsers();
+  // const updateUser = usePersistUsers();
   console.log("Name: ", user.name);
   console.log("First Name: ", firstName);
   return (
@@ -18,25 +20,19 @@ export function UserDisplay({ user }: UserDisplayProps) {
       <h2>{user.name}</h2>
       <p>{user.email}</p>
       <p>{user.phone}</p>
-      <button
-        onClick={() => {
-          updateUser({
-            ...user,
-            name: Math.random().toString(36).substring(7),
-          });
-          // setName((prev) => {
-          //   const newState = prev.map((u) => {
-          //     if (u.id === user.id) {
-          //       return { ...u, name: Math.random().toString(36).substring(7) };
-          //     }
-          //     return u;
-          //   });
-          //   return newState;
-          // });
-        }}
-      >
-        Modify Name
-      </button>
+      <Suspense fallback={<span>Updating name...</span>}>
+        <UpdateButton user={user} />
+        {/* <button
+          onClick={() => {
+            updateUser({
+              ...user,
+              name: Math.random().toString(36).substring(7),
+            });
+          }}
+        >
+          Modify Name
+        </button> */}
+      </Suspense>
     </div>
   );
 }

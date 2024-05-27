@@ -15,11 +15,11 @@ export function usePersistUsers() {
         return newState;
       });
 
-      // Persist
-      const modified = await persistUser(user);
-
       // Update
-      await setUsers((prev) => {
+      await setUsers(async (prev) => {
+        // Persist
+        const modified = await persistUser(user);
+
         const newState = prev.map((u) => (u.id === user.id ? modified : u));
         return newState;
       });

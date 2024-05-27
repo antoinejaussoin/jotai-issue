@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Editor from "./Editor";
 
 function App() {
@@ -8,7 +8,9 @@ function App() {
   return (
     <>
       <button onClick={() => setVisible(true)}>Load</button>
-      {visible ? <Editor /> : null}
+      <Suspense fallback={<span>Editor...</span>}>
+        {visible ? <Editor /> : null}
+      </Suspense>
     </>
   );
 }
